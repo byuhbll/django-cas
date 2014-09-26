@@ -44,7 +44,8 @@ Add these to ``settings.py`` to use the CAS Backend::
 
 ## Urls.py for CAS
 
-Add this to your urls.py file in order to use CAS:
+Add this to your urls.py file in order to use CAS::
+
     urlpatterns = patterns(
         ...,
         url(r'^admin/login', 'cas.views.login'),

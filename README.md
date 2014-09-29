@@ -33,10 +33,24 @@ Add the following to middleware if you want to use CAS::
 
 Add these to ``settings.py`` to use the CAS Backend::
 
+    AUTHENTICATION_BACKENDS = (
+        'django.contrib.auth.backends.ModelBackend',
+        'cas.backends.CASBackend',
+    )
 
     CAS_SERVER_URL = "Your Cas Server"
     CAS_LOGOUT_COMPLETELY = True
     CAS_PROVIDE_URL_TO_LOGOUT = True
+
+## Urls.py for CAS
+
+Add this to your urls.py file in order to use CAS::
+
+    urlpatterns = patterns(
+        ...,
+        url(r'^admin/login', 'cas.views.login'),
+        url(r'^admin/logout', 'cas.views.logout'),
+    )
 
 # Additional Features
 

@@ -163,6 +163,7 @@ def login(request, next_page=None, required=False, gateway=False):
         next_page = _redirect_url(request)
 
     if request.user.is_authenticated():
+        logger.debug('user authenticated, redirecting')
         return HttpResponseRedirect(next_page)
 
     ticket = request.GET.get('ticket')
@@ -173,9 +174,11 @@ def login(request, next_page=None, required=False, gateway=False):
         service = _service_url(request, next_page, False)
 
     if ticket:
+        logger.debug('got the ticket, attempting user authentication')
         user = auth.authenticate(ticket=ticket, service=service)
 
         if user is not None:
+            logger.debug('user authenticated, login')
 
             auth.login(request, user)
 
@@ -184,6 +187,7 @@ def login(request, next_page=None, required=False, gateway=False):
 
             return HttpResponseRedirect(next_page)
         elif settings.CAS_RETRY_LOGIN or required:
+            logger.debug('not authenticated, redirecting to CAS')
             if gateway:
                 return HttpResponseRedirect(_login_url(service, ticket, True))
             else:
@@ -202,6 +206,7 @@ def login(request, next_page=None, required=False, gateway=False):
                 error = "<h1>Forbidden</h1><p>Login failed.</p>"
                 return HttpResponseForbidden(error)
     else:
+        logger.debug('redirecting to CAS')
         if gateway:
             return HttpResponseRedirect(_login_url(service, ticket, True))
         else:

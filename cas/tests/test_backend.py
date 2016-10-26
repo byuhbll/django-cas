@@ -1,4 +1,8 @@
-import mock
+try:
+    import mock
+except ImportError:
+    from unittest import mock
+
 from django.test import TestCase
 
 from cas.backends import CASBackend
